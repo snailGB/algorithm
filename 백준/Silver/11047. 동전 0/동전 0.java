@@ -1,32 +1,41 @@
-import java.util.Scanner;
- 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
 public class Main {
- 
-	public static void main(String[] args) {
- 
-		Scanner in = new Scanner(System.in);
-		
-		int N = in.nextInt();
-		int K = in.nextInt();
-		
-		int[] coin = new int[N];
-		
-		for(int i = 0; i < N; i++) {
-			coin[i] = in.nextInt();
-		}
-		
-		int count = 0;
- 
-		for(int i = N - 1; i >= 0; i--) {
- 
-			// 현재 동전의 가치가 K보다 작거나 같아야지 구성가능하다.
-			if(coin[i] <= K) {
-				// 현재 가치의 동전으로 구성할 수 있는 개수를 더해준다.
-				count += (K / coin[i]);
-				K = K % coin[i];
-			}
-		}
-		System.out.println(count);
-	}
- 
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int coinCnt = Integer.valueOf(st.nextToken());
+        int targetSum = Integer.valueOf(st.nextToken());
+
+        int[] coinArr = new int[coinCnt];
+        for (int idx = 0; idx < coinCnt; idx++) {
+            coinArr[idx] = Integer.valueOf(br.readLine());
+        }
+
+        int coinIdx = coinCnt - 1;
+        while (targetSum / coinArr[coinIdx] == 0) {
+            coinIdx--;
+        }
+
+        int answer = 0;
+        while(true) {
+            int currentCnt = targetSum / coinArr[coinIdx];
+
+            answer += currentCnt;
+            targetSum -= coinArr[coinIdx] * currentCnt;
+
+            if (targetSum == 0) {
+                break;
+            }
+
+            coinIdx--;
+        }
+
+        System.out.println(answer);
+    }
 }
