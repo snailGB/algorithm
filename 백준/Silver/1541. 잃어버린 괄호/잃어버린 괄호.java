@@ -20,7 +20,7 @@ public class Main {
         String[] strArr = input.split("-");
         int answer = sum(strArr[0]);
         for (int idx = 1; idx < strArr.length; idx++) {
-            answer -= sum(strArr[idx]); // 이후 그룹은 더한 뒤 빼기
+            answer -= sum(strArr[idx]); 
         }
 
         System.out.println(answer);
