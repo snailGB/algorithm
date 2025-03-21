@@ -23,25 +23,18 @@ public class Main {
             int from = Integer.valueOf(st.nextToken());
             int to = Integer.valueOf(st.nextToken());
             int cost = Integer.valueOf(st.nextToken());
-
             edgeList.add(new Edge(from, to, cost));
         }
 
-        costArr[1] = 0; // 출발 노드의 거리 0으로 초기화
-
-        // 벨만-포드 알고리즘
-        for (int compare = 1; compare <= nodeCnt - 1; compare++) {
+        costArr[1] = 0;
+        for (int compare = 1; compare < nodeCnt; compare++) {
             for (Edge edge : edgeList) {
-                if (costArr[edge.from] != Long.MAX_VALUE) { // 경로가 존재하는 경우에만 갱신
-                    long compareCost = edge.cost + costArr[edge.from];
-                    if (compareCost < costArr[edge.to]) {
-                        costArr[edge.to] = compareCost;
-                    }
+                if (costArr[edge.from] != Long.MAX_VALUE && costArr[edge.from] + edge.cost < costArr[edge.to]) {
+                    costArr[edge.to] = costArr[edge.from] + edge.cost;
                 }
             }
         }
 
-        // 음수 사이클 탐지
         boolean hasNegativeCycle = false;
         for (Edge edge : edgeList) {
             if (costArr[edge.from] != Long.MAX_VALUE && costArr[edge.from] + edge.cost < costArr[edge.to]) {
@@ -55,14 +48,13 @@ public class Main {
         } else {
             for (int node = 2; node <= nodeCnt; node++) {
                 if (costArr[node] == Long.MAX_VALUE) {
-                    answer.append("-1\n"); // 도달할 수 없는 노드는 -1 출력
+                    answer.append("-1\n");
                 } else {
                     answer.append(costArr[node]).append("\n");
                 }
             }
         }
 
-        // 한 번에 출력
         System.out.print(answer);
     }
 }
